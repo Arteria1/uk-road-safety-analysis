@@ -101,3 +101,132 @@ SELECT
     NULLIF(TRIM(time), '')::TIME
 
 FROM collisions_raw;
+
+TRUNCATE TABLE collisions; -- Removing all the data within collisions as is incomplete. only imported 14 columns & type
+
+-- Importing all the data from collisions_raw to collisions with correct data types.
+INSERT INTO collisions (
+    collision_index,
+    collision_year,
+    collision_ref_no,
+    location_easting_osgr,
+    location_northing_osgr,
+    longitude,
+    latitude,
+    police_force,
+    collision_severity,
+    number_of_vehicles,
+    number_of_casualties,
+    collision_date,
+    day_of_week,
+    collision_time,
+    local_authority_district,
+    local_authority_ons_district,
+    local_authority_highway,
+    local_authority_highway_current,
+    first_road_class,
+    first_road_number,
+    road_type,
+    speed_limit,
+    junction_detail_historic,
+    junction_detail,
+    junction_control,
+    second_road_class,
+    second_road_number,
+    pedestrian_crossing_human_control_historic,
+    pedestrian_crossing_physical_facilities_historic,
+    pedestrian_crossing,
+    light_conditions,
+    weather_conditions,
+    road_surface_conditions,
+    special_conditions_at_site,
+    carriageway_hazards_historic,
+    carriageway_hazards,
+    urban_or_rural_area,
+    did_police_officer_attend_scene_of_accident,
+    trunk_road_flag,
+    lsoa_of_accident_location,
+    enhanced_severity_collision,
+    collision_injury_based,
+    collision_adjusted_severity_serious,
+    collision_adjusted_severity_slight
+)
+
+SELECT
+    collision_index,
+    NULLIF(TRIM(collision_year), '')::SMALLINT,
+    NULLIF(TRIM(collision_ref_no), ''),
+
+    NULLIF(TRIM(location_easting_osgr), '')::INTEGER,
+    NULLIF(TRIM(location_northing_osgr), '')::INTEGER,
+
+    NULLIF(TRIM(longitude), '')::NUMERIC,
+    NULLIF(TRIM(latitude), '')::NUMERIC,
+
+    NULLIF(TRIM(police_force), '')::SMALLINT,
+    NULLIF(TRIM(collision_severity), '')::SMALLINT,
+
+    NULLIF(TRIM(number_of_vehicles), '')::SMALLINT,
+    NULLIF(TRIM(number_of_casualties), '')::SMALLINT,
+
+    TO_DATE(date, 'DD/MM/YYYY'),
+
+    NULLIF(TRIM(day_of_week), '')::SMALLINT,
+    NULLIF(TRIM(time), '')::TIME,
+
+    NULLIF(TRIM(local_authority_district), ''),
+    NULLIF(TRIM(local_authority_ons_district), ''),
+    NULLIF(TRIM(local_authority_highway), ''),
+    NULLIF(TRIM(local_authority_highway_current), ''),
+
+    NULLIF(TRIM(first_road_class), '')::SMALLINT,
+    NULLIF(TRIM(first_road_number), '')::INTEGER,
+
+    NULLIF(TRIM(road_type), '')::SMALLINT,
+    NULLIF(TRIM(speed_limit), '')::SMALLINT,
+
+    NULLIF(TRIM(junction_detail_historic), '')::SMALLINT,
+    NULLIF(TRIM(junction_detail), '')::SMALLINT,
+    NULLIF(TRIM(junction_control), '')::SMALLINT,
+
+    NULLIF(TRIM(second_road_class), '')::SMALLINT,
+    NULLIF(TRIM(second_road_number), '')::INTEGER,
+
+    NULLIF(TRIM(pedestrian_crossing_human_control_historic), '')::SMALLINT,
+    NULLIF(TRIM(pedestrian_crossing_physical_facilities_historic), '')::SMALLINT,
+    NULLIF(TRIM(pedestrian_crossing), '')::SMALLINT,
+
+    NULLIF(TRIM(light_conditions), '')::SMALLINT,
+    NULLIF(TRIM(weather_conditions), '')::SMALLINT,
+    NULLIF(TRIM(road_surface_conditions), '')::SMALLINT,
+    NULLIF(TRIM(special_conditions_at_site), '')::SMALLINT,
+
+    NULLIF(TRIM(carriageway_hazards_historic), '')::SMALLINT,
+    NULLIF(TRIM(carriageway_hazards), '')::SMALLINT,
+
+    NULLIF(TRIM(urban_or_rural_area), '')::SMALLINT,
+
+    NULLIF(
+        TRIM(did_police_officer_attend_scene_of_accident),
+        ''
+    )::SMALLINT,
+
+    NULLIF(TRIM(trunk_road_flag), '')::SMALLINT,
+
+    NULLIF(TRIM(lsoa_of_accident_location), ''),
+
+    NULLIF(TRIM(enhanced_severity_collision), '')::SMALLINT,
+
+    NULLIF(TRIM(collision_injury_based), ''),
+
+    NULLIF(
+        TRIM(collision_adjusted_severity_serious),
+        ''
+    )::NUMERIC,
+
+    NULLIF(
+        TRIM(collision_adjusted_severity_slight),
+        ''
+    )::NUMERIC
+
+FROM collisions_raw;
